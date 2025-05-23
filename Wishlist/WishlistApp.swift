@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct WishlistApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-            //prueba de commit
+                .modelContainer(for: WishlistModel.self)
         }
     }
 }
