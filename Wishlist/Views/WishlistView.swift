@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  Wishlist.swift
 //  Wishlist
 //
 //  Created by David Viloria Ortega on 22/05/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct ContentView: View {
+struct Wishlist: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var wishes: [WishlistModel]
     
@@ -73,17 +73,8 @@ struct ContentView: View {
         }
     }
 }
-#Preview("ContentView") {
-    let container = try! ModelContainer(for: WishlistModel.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-    
-    container.mainContext.insert(WishlistModel(title: "Mi primer deseo"))
-    container.mainContext.insert(WishlistModel(title: "Mi segundo deseo"))
-    container.mainContext.insert(WishlistModel(title: "Viajar a Europa"))
-    container.mainContext.insert(WishlistModel(title: "Descubrir America"))
-    return ContentView()
-        .modelContainer(container)
-}
-#Preview("EmptyList") {
-    ContentView()
+
+#Preview {
+    Wishlist()
         .modelContainer(for: WishlistModel.self, inMemory: true)
 }

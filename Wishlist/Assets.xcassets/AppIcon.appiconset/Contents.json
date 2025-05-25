@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "8150391-1024.png",
+      "filename" : "icon2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "8150391_wishlist_heart_love_add to wishlist_icon.png",
+      "filename" : "iconDarkDark.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "8150391_wishlist_heart_love_add to wishlist_icon (2).png",
+      "filename" : "imagetinted.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

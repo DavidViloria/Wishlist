@@ -13,7 +13,7 @@ struct WishlistApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: WishlistModel.self)
+                .modelContainer(for: GroceryItem.self)
         }
     }
 }
