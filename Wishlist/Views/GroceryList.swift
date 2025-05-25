@@ -12,6 +12,8 @@ struct GroceryList: View {
     @Environment(\.modelContext) private var modelContextGrocery
     @Query private var items: [GroceryItem]
     
+    @State private var item: String = ""
+    
     var body: some View {
         NavigationStack{
             List{
@@ -38,8 +40,9 @@ struct GroceryList: View {
                     .swipeActions(edge: .leading, allowsFullSwipe: true, content: {
                         Button("Done", systemImage: item.isCompleted == false ? "checkmark.circle" : "x.circle"){
                             item.isCompleted.toggle()
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred(intensity: .infinity)
                         }
-                        .tint(item.isCompleted == false ? Color.blue : Color.white)
+                        .tint(item.isCompleted == false ? Color.green : Color.red)
                     })
                 
                 }
@@ -54,6 +57,23 @@ struct GroceryList: View {
                     }
                 }
             }
+            .safeAreaInset(edge: .bottom, content: {
+                VStack{
+                    TextField("Nuevo artículo", text: $item)
+                        .textFieldStyle(.roundedBorder)
+                        .padding()
+                    
+                    Button {
+                        let newItem = GroceryItem(title: item, isCompleted: false)
+                        modelContextGrocery.insert(newItem)
+                        item = ""
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    } label:{
+                        Text("Save")
+                            .padding()
+                    }
+                }
+            })
             .overlay {
                 if items.isEmpty {
                     ContentUnavailableView(
