@@ -24,14 +24,37 @@ struct GroceryList: View {
                             .fontWeight(.medium)
                             .strikethrough(item.isCompleted, color: .gray)
                             .foregroundStyle(item.isCompleted ? .gray : .primary)
-                        Spacer()
                     }
-                    .padding(.vertical, 8)
+                    .swipeActions {
+                        Button(role: .destructive) {
+                            withAnimation {
+                                modelContextGrocery.delete(item)
+                            }
+                        } label: {
+                            Label("Eliminar", systemImage: "trash")
+                        }
+                    }
+                    
+                    .swipeActions(edge: .leading, allowsFullSwipe: true, content: {
+                        Button("Done", systemImage: item.isCompleted == false ? "checkmark.circle" : "x.circle"){
+                            item.isCompleted.toggle()
+                        }
+                        .tint(item.isCompleted == false ? Color.blue : Color.white)
+                    })
+                
                 }
             }
             .navigationTitle("Grocery List")
+            .toolbar {
+                ToolbarItem(placement: .automatic) {
+                    Button(action: {
+                        addEssentialFood()
+                    }) {
+                        Label("Añadir", systemImage: "carrot")
+                    }
+                }
+            }
             .overlay {
-                
                 if items.isEmpty {
                     ContentUnavailableView(
                         "Sin articulos todavía",
@@ -51,6 +74,14 @@ struct GroceryList: View {
                 
             }
         }
+        
+    }
+    
+    func addEssentialFood(){
+        modelContextGrocery.insert(GroceryItem(title: "Legumbres", isCompleted: true))
+        modelContextGrocery.insert(GroceryItem(title: "Papaya", isCompleted: false))
+        modelContextGrocery.insert(GroceryItem(title: "Mango", isCompleted: Bool.random()))
+        modelContextGrocery.insert(GroceryItem(title: "Arroz", isCompleted: Bool.random()))
         
     }
 }
