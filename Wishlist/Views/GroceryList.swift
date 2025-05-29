@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
 
 struct GroceryList: View {
     @Environment(\.modelContext) private var modelContextGrocery
@@ -15,6 +16,12 @@ struct GroceryList: View {
     @State private var item: String = ""
     
     @FocusState private var isFocused: Bool
+    
+    let buttonTip = ButtonTip()
+    
+    init(){
+        try? Tips.configure()
+    }
     
     var body: some View {
         NavigationStack{
@@ -51,12 +58,13 @@ struct GroceryList: View {
             }
             .navigationTitle("Grocery List")
             .toolbar {
-                ToolbarItem(placement: .automatic) {
-                    Button(action: {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button{
                         addEssentialFood()
-                    }) {
-                        Label("Añadir", systemImage: "carrot")
+                    } label: {
+                        Image(systemName: "carrot")
                     }
+                    .popoverTip(buttonTip)
                 }
             }
             
@@ -100,7 +108,7 @@ struct GroceryList: View {
                         item = ""
                         isFocused = false
                     } label:{
-                        Text("Save")
+                        Text("Guardar")
                             .font(.title2.weight(.medium))
                             .frame(maxWidth: .infinity)
                     }
