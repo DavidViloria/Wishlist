@@ -20,7 +20,7 @@ struct GroceryList: View {
     let buttonTip = ButtonTip()
     
     init(){
-        try? Tips.configure()
+        setupTips()
     }
     
     var body: some View {
@@ -132,6 +132,17 @@ struct GroceryList: View {
         modelContextGrocery.insert(GroceryItem(title: "Mango", isCompleted: Bool.random()))
         modelContextGrocery.insert(GroceryItem(title: "Arroz", isCompleted: Bool.random()))
         
+    }
+    
+    func setupTips(){
+        do {
+            try Tips.resetDatastore()
+            try Tips.configure([
+                .displayFrequency(.immediate)
+            ])
+        } catch {
+            print("Error inizialiting TipKit \(error.localizedDescription)")
+        }
     }
 }
 
