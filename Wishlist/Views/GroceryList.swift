@@ -14,6 +14,8 @@ struct GroceryList: View {
     
     @State private var item: String = ""
     
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
         NavigationStack{
             List{
@@ -44,7 +46,7 @@ struct GroceryList: View {
                         }
                         .tint(item.isCompleted == false ? Color.green : Color.red)
                     })
-                
+                    
                 }
             }
             .navigationTitle("Grocery List")
@@ -57,23 +59,7 @@ struct GroceryList: View {
                     }
                 }
             }
-            .safeAreaInset(edge: .bottom, content: {
-                VStack{
-                    TextField("Nuevo artículo", text: $item)
-                        .textFieldStyle(.roundedBorder)
-                        .padding()
-                    
-                    Button {
-                        let newItem = GroceryItem(title: item, isCompleted: false)
-                        modelContextGrocery.insert(newItem)
-                        item = ""
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                    } label:{
-                        Text("Save")
-                            .padding()
-                    }
-                }
-            })
+            
             .overlay {
                 if items.isEmpty {
                     ContentUnavailableView(
@@ -93,6 +79,41 @@ struct GroceryList: View {
                 }
                 
             }
+            .safeAreaInset(edge: .bottom, content: {
+                VStack(spacing: 12){
+                    TextField("", text: $item)
+                        .textFieldStyle(.plain)
+                        .padding(12)
+                        .background(.tertiary)
+                        .cornerRadius(12)
+                        .font(.title.weight(.light))
+                        .focused($isFocused)
+                    
+                    
+                    Button {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        guard !item.isEmpty else {
+                            return
+                        }
+                        let newItem = GroceryItem(title: item, isCompleted: false)
+                        modelContextGrocery.insert(newItem)
+                        item = ""
+                        isFocused = false
+                    } label:{
+                        Text("Save")
+                            .font(.title2.weight(.medium))
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .buttonBorderShape(.roundedRectangle)
+                    .controlSize(.extraLarge)
+                    
+                }
+                .padding()
+                .background(.bar)
+            })
+            
+            
         }
         
     }
@@ -119,13 +140,13 @@ struct GroceryList: View {
         GroceryItem(title: "Mango", isCompleted: Bool.random()),
         GroceryItem(title: "Arroz", isCompleted: Bool.random())
     ]
-
+    
     let container = try! ModelContainer(for: GroceryItem.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-
+    
     for item in sampleData {
         container.mainContext.insert(item)
     }
-
+    
     return GroceryList()
         .modelContainer(container)
 }
